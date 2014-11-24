@@ -50,7 +50,7 @@ Requires:       cblas
 %endif
 
 %description libs
-HMat library binaries 
+A hierarchical matrix C/C++ library (binaries) 
 
 %package devel
 Summary:        OpenTURNS development files
@@ -64,7 +64,7 @@ Requires:       cblas-devel
 %endif
 
 %description devel
-Development files for HMat 
+A hierarchical matrix C/C++ library (development files)
 
 %prep
 %setup -q
