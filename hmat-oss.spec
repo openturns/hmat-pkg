@@ -25,7 +25,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake
 %if 0%{?suse_version}
 BuildRequires:  lapack
-BuildRequires:  atlas
+BuildRequires:  cblas-devel 
 %else
 BuildRequires:  lapack-devel
 BuildRequires:  atlas-devel
@@ -43,7 +43,11 @@ A hierarchical matrix C/C++ library including a LU solver.
 Summary:        Uncertainty treatment library
 Group:          Development/Libraries/C and C++
 Requires:       lapack
+%if ! 0%{?suse_version}
 Requires:       atlas
+%else
+Requires:       cblas
+%endif
 
 %description libs
 HMat library binaries 
@@ -54,6 +58,9 @@ Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
 %if ! 0%{?suse_version}
 Requires:       lapack-devel
+Requires:       atlas-devel
+%else
+Requires:       cblas-devel
 %endif
 
 %description devel
@@ -78,11 +85,7 @@ rm -rf %{buildroot}
 
 %files libs
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING README
-%dir %{_sysconfdir}/%{name}
 %{_libdir}/*.so.*
-%dir %{_datadir}/%{name}
-%dir %{_libdir}/%{name}
 
 %files devel
 %defattr(-,root,root,-)
