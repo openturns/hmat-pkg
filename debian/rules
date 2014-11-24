@@ -1,0 +1,58 @@
+#!/usr/bin/make -f
+
+ifeq ($(findstring parallel=,$(DEB_BUILD_OPTIONS)),)
+	export DEB_BUILD_OPTIONS+=parallel=$(shell getconf _NPROCESSORS_ONLN)
+endif
+$(info DEB_BUILD_OPTIONS:$(origin DEB_BUILD_OPTIONS)=$(DEB_BUILD_OPTIONS))
+
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	test_makeflags = -j$(NUMJOBS)
+endif
+
+cppflags := $(shell dpkg-buildflags --get CPPFLAGS)
+cflags := $(shell dpkg-buildflags --get CFLAGS) $(cppflags)
+cxxflags := $(shell dpkg-buildflags --get CXXFLAGS) $(cppflags)
+fflags := $(shell dpkg-buildflags --get FFLAGS)
+ldflags := $(shell dpkg-buildflags --get LDFLAGS)
+ldflags += -Wl,--as-needed
+
+
+# Explicitly set builddir directory
+builddir := obj-$(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+
+%:
+ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), mips mipsel))
+	$(error This package requires more than 1GB RAM; do not build on mips/mipsel)
+endif
+	dh $@ --buildsystem=cmake --builddirectory=$(builddir) --with quilt --parallel
+
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+            $(with_tbb) \
+            -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ \
+            -DCMAKE_Fortran_COMPILER:FILEPATH=/usr/bin/gfortran \
+            -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc \
+            -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
+            -DCMAKE_C_FLAGS_RELWITHDEBINFO:STRING='$(cflags)' \
+            -DCMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING='$(cxxflags)' \
+            -DCMAKE_Fortran_FLAGS_RELWITHDEBINFO:STRING='$(fflags)' \
+            -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
+            -DCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
+            -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
+            -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+            -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
+            -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp
+
+override_dh_strip:
+	dh_strip -plibhmat --dbg-package=libhmat-dbg
+	dh_strip
+
+override_dh_compress:
+	dh_compress -X.pdf -X.svn -X.py
+
+get-orig-source:
+	uscan --force-download --verbose
+	mv ../openturn*.tar.[gzbz2]* ../tarballs
