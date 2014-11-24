@@ -81,8 +81,8 @@ make install DESTDIR=%{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post libs -p /sbin/ldconfig 
-%postun libs -p /sbin/ldconfig  
+%post -n libhmat-oss1 -p /sbin/ldconfig 
+%postun -n libhmat-oss1 -p /sbin/ldconfig  
 
 %files -n libhmat-oss1
 %defattr(-,root,root,-)
