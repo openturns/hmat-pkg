@@ -25,16 +25,15 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake
 %if 0%{?suse_version}
 BuildRequires:  lapack
-BuildRequires:  atlas
 %else
 BuildRequires:  lapack-devel
-BuildRequires:  atlas-devel
 %endif
 %if 0%{?suse_version}
 BuildRequires:  gcc-fortran
 %else
 BuildRequires:  gcc-gfortran
 %endif
+BuildRequires:  atlas-devel
 
 %description
 A hierarchical matrix C/C++ library including a LU solver.
@@ -54,7 +53,6 @@ Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
 %if ! 0%{?suse_version}
 Requires:       lapack-devel
-Requires:       atlas-devel
 %endif
 
 %description devel
@@ -64,7 +62,7 @@ Development files for HMat
 %setup -q
 
 %build
-%cmake
+%cmake -DCBLAS_LIBRARIES=`find /usr/lib* -name libcblas.so`
 make %{?_smp_mflags} 
 
 %install
@@ -87,10 +85,12 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,root,root,-)
-%dir %{_includedir}/%{name}
-%{_includedir}/%{name}/*.h*
+%dir %{_includedir}/hmat
+%{_includedir}/hmat/*.h
+%{_includedir}/*.hpp
+%{_datadir}/hmat/
 %{_libdir}/*.so
-%{_libdir}/cmake/
+
 
 %changelog
 * Sat Nov 22 2014 Julien Schueller <schueller at phimeca dot com> 1.0-1
