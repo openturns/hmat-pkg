@@ -18,7 +18,7 @@ Version:        1.0
 Release:        1%{?dist}
 Summary:        A hierarchical matrix C/C++ library
 Group:          System Environment/Libraries
-License:        GPL
+License:        GPL2
 URL:            https://github.com/jeromerobert/hmat-oss
 Source0:        https://github.com/jeromerobert/hmat-oss/archive/%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
@@ -35,12 +35,13 @@ BuildRequires:  gcc-fortran
 %else
 BuildRequires:  gcc-gfortran
 %endif
+Requires:       libhmat-oss1
 
 %description
 A hierarchical matrix C/C++ library including a LU solver.
 
-%package libs
-Summary:        Uncertainty treatment library
+%package -n libhmat-oss1
+Summary:        A hierarchical matrix C/C++ library 
 Group:          Development/Libraries/C and C++
 Requires:       lapack
 %if ! 0%{?suse_version}
@@ -49,13 +50,13 @@ Requires:       atlas
 Requires:       cblas
 %endif
 
-%description libs
+%description -n libhmat-oss1
 A hierarchical matrix C/C++ library (binaries) 
 
 %package devel
-Summary:        OpenTURNS development files
+Summary:        A hierarchical matrix C/C++ library 
 Group:          Development/Libraries/C and C++
-Requires:       %{name}-libs = %{version}
+Requires:       libhmat-oss1 = %{version}
 %if ! 0%{?suse_version}
 Requires:       lapack-devel
 Requires:       atlas-devel
@@ -83,7 +84,7 @@ rm -rf %{buildroot}
 %post libs -p /sbin/ldconfig 
 %postun libs -p /sbin/ldconfig  
 
-%files libs
+%files -n libhmat-oss1
 %defattr(-,root,root,-)
 %{_libdir}/*.so.*
 
