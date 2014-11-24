@@ -25,15 +25,16 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake
 %if 0%{?suse_version}
 BuildRequires:  lapack
+BuildRequires:  atlas
 %else
 BuildRequires:  lapack-devel
+BuildRequires:  atlas-devel
 %endif
 %if 0%{?suse_version}
 BuildRequires:  gcc-fortran
 %else
 BuildRequires:  gcc-gfortran
 %endif
-BuildRequires:  atlas-devel
 
 %description
 A hierarchical matrix C/C++ library including a LU solver.
