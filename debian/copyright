@@ -1,0 +1,20 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: HMAT
+Upstream-Contact: jeromerobert@github.com
+Source: https://github.com/jeromerobert/hmat-oss/archive/
+Debianized-By: Julien Schueller <schueller@phimeca.com>
+Debianized-Date: Sat, 22 Nov 2014 18:12:15 +0100.
+
+Files: *
+Copyright: Copyright (C) 2014-2015 Airbus Group SAS 
+License: GPL-2
+
+Files: debian/*
+Copyright: 2014 Julien Schueller
+License: MIT
+
+License: GPL-2
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
+
