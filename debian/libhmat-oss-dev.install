@@ -1,0 +1,4 @@
+usr/lib/libhmat*.so
+usr/share/hmat/CMake/*.cmake
+usr/include/hmat/*.h
+usr/include/*.hpp

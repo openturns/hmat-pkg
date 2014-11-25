@@ -7,25 +7,25 @@ Build-Depends: debhelper (>= 8), quilt, gfortran, cmake, liblapack-dev, libblas-
 Standards-Version: 3.9.5
 Homepage: https://github.com/jeromerobert/hmat-oss
 
-Package: libhmat
+Package: libhmat-oss1
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: dynamic libraries for HMat 
  A hierarchical matrix C/C++ library including a LU solver.
 
-Package: libhmat-dev
+Package: libhmat-oss-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libhmat (= ${binary:Version}),
+Depends: ${misc:Depends}, libhmat-oss1 (= ${binary:Version}),
  liblapack-dev, libblas-dev
 Description: headers and development libraries for HMat
  A hierarchical matrix C/C++ library including a LU solver.
  
-Package: libhmat-dbg
+Package: libhmat-oss-dbg
 Section: debug
 Architecture: any
-Depends: ${misc:Depends}, libhmat-dev
+Depends: ${misc:Depends}, libhmat-oss-dev
 Description: debug symbols for HMat 
  A hierarchical matrix C/C++ library including a LU solver.
 

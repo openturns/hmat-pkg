@@ -17,17 +17,12 @@ fflags := $(shell dpkg-buildflags --get FFLAGS)
 ldflags := $(shell dpkg-buildflags --get LDFLAGS)
 ldflags += -Wl,--as-needed
 
-
 # Explicitly set builddir directory
 builddir := obj-$(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 
 
 %:
-ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), mips mipsel))
-	$(error This package requires more than 1GB RAM; do not build on mips/mipsel)
-endif
 	dh $@ --buildsystem=cmake --builddirectory=$(builddir) --with quilt --parallel
-
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
@@ -47,12 +42,6 @@ override_dh_auto_configure:
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp
 
 override_dh_strip:
-	dh_strip -plibhmat --dbg-package=libhmat-dbg
+	dh_strip -plibhmat --dbg-package=libhmat-oss-dbg
 	dh_strip
 
-override_dh_compress:
-	dh_compress -X.pdf -X.svn -X.py
-
-get-orig-source:
-	uscan --force-download --verbose
-	mv ../openturn*.tar.[gzbz2]* ../tarballs
