@@ -71,7 +71,8 @@ A hierarchical matrix C/C++ library (development files)
 %setup -q
 
 %build
-%cmake -DCBLAS_LIBRARIES=`find /usr/lib* -name libcblas.so`
+# workaround for missing symlinks on OBS instances
+%cmake -DCBLAS_LIBRARIES=`find /usr/lib* -name libcblas.so -name libsatlas.so`
 make %{?_smp_mflags} 
 
 %install
