@@ -27,19 +27,16 @@ builddir := obj-$(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 override_dh_auto_configure:
 	dh_auto_configure -- \
             $(with_tbb) \
-            -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ \
-            -DCMAKE_Fortran_COMPILER:FILEPATH=/usr/bin/gfortran \
-            -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc \
             -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
             -DCMAKE_C_FLAGS_RELWITHDEBINFO:STRING='$(cflags)' \
             -DCMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING='$(cxxflags)' \
-            -DCMAKE_Fortran_FLAGS_RELWITHDEBINFO:STRING='$(fflags)' \
             -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp
+            -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
+	    -DBUILD_EXAMPLES=OFF
 
 override_dh_strip:
 	dh_strip -plibhmat --dbg-package=libhmat-oss-dbg
