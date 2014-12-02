@@ -14,7 +14,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           hmat-oss 
-Version:        1.0.1
+Version:        1.0.2
 Release:        1%{?dist}
 Summary:        A hierarchical matrix C/C++ library
 Group:          System Environment/Libraries
@@ -72,7 +72,7 @@ A hierarchical matrix C/C++ library (development files)
 
 %build
 # workaround for missing symlinks on OBS instances
-%cmake -DBUILD_EXAMPLES=OFF -DCBLAS_LIBRARIES=`find /usr/lib* -name libcblas.so -o -name libsatlas.so`
+%cmake -DCBLAS_LIBRARIES=`find /usr/lib* -name libcblas.so -o -name libsatlas.so`
 make %{?_smp_mflags} 
 
 %install
@@ -91,12 +91,12 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,root,root,-)
-%dir %{_includedir}/hmat
+%dir %{_includedir}/hmat/
 %{_includedir}/hmat/*.h
 %{_includedir}/*.hpp
-%{_datadir}/hmat/
 %{_libdir}/*.so
-
+%dir %{_libdir}/cmake/hmat/
+%{_libdir}/cmake/hmat/*.cmake
 
 %changelog
 * Sat Nov 22 2014 Julien Schueller <schueller at phimeca dot com> 1.0-1

@@ -35,8 +35,7 @@ override_dh_auto_configure:
             -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
-	    -DBUILD_EXAMPLES=OFF
+            -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp
 
 override_dh_strip:
 	dh_strip -plibhmat --dbg-package=libhmat-oss-dbg
