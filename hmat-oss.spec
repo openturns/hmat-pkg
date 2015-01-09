@@ -70,6 +70,9 @@ A hierarchical matrix C/C++ library (development files)
 %prep
 %setup -q
 
+# obs instances are missing the symlinks
+sed -i 's|set(HMAT_LIBRARIES @CMAKE_PROJECT_NAME@)|set(HMAT_LIBRARIES "@CMAKE_PROJECT_NAME@;\${CBLAS_LIBRARIES}")|g' CMake/HMATConfig.cmake.in
+
 %build
 # workaround for missing symlinks on OBS instances
 %cmake -DCBLAS_LIBRARIES=`find /usr/lib* -name libcblas.so -o -name libsatlas.so`
