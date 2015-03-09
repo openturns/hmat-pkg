@@ -14,7 +14,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           hmat-oss 
-Version:        1.0.3
+Version:        1.0.6
 Release:        1%{?dist}
 Summary:        A hierarchical matrix C/C++ library
 Group:          System Environment/Libraries
@@ -71,7 +71,7 @@ A hierarchical matrix C/C++ library (development files)
 %setup -q
 
 # obs instances are missing the symlinks
-sed -i 's|set(HMAT_LIBRARIES @CMAKE_PROJECT_NAME@)|set(HMAT_LIBRARIES "@CMAKE_PROJECT_NAME@;\${CBLAS_LIBRARIES}")|g' CMake/HMATConfig.cmake.in
+sed -i 's|set(HMAT_LIBRARIES "@CMAKE_PROJECT_NAME@")|set(HMAT_LIBRARIES "@CMAKE_PROJECT_NAME@;\${CBLAS_LIBRARIES}")|g' CMake/HMATConfig.cmake.in
 
 %build
 # workaround for missing symlinks on OBS instances
