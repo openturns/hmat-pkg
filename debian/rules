@@ -5,15 +5,9 @@ ifeq ($(findstring parallel=,$(DEB_BUILD_OPTIONS)),)
 endif
 $(info DEB_BUILD_OPTIONS:$(origin DEB_BUILD_OPTIONS)=$(DEB_BUILD_OPTIONS))
 
-ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-	test_makeflags = -j$(NUMJOBS)
-endif
-
 cppflags := $(shell dpkg-buildflags --get CPPFLAGS)
 cflags := $(shell dpkg-buildflags --get CFLAGS) $(cppflags)
 cxxflags := $(shell dpkg-buildflags --get CXXFLAGS) $(cppflags)
-fflags := $(shell dpkg-buildflags --get FFLAGS)
 ldflags := $(shell dpkg-buildflags --get LDFLAGS)
 ldflags += -Wl,--as-needed
 
@@ -35,9 +29,9 @@ override_dh_auto_configure:
             -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
+            -DINSTALL_INCLUDE_DIR:PATH=/usr/include/hmat \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp
 
 override_dh_strip:
-	dh_strip -plibhmat --dbg-package=libhmat-oss-dbg
-	dh_strip
+	dh_strip --dbg-package=libhmat-oss1-dbg
 

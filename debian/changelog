@@ -1,4 +1,10 @@
-hmat-oss (1.0.7-1) unstable; urgency=low
+hmat-oss (1.0.4-2) unstable; urgency=low
+
+  * Upload to unstable (Closes: #775738)
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 25 Jan 2015 11:22:12 +0000
+
+hmat-oss (1.0.4-1) unstable; urgency=low
 
   * Initial release
 

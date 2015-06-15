@@ -1,11 +1,13 @@
-Source: hmat-oss 
+Source: hmat-oss
 Section: science
 Priority: extra
 Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
-Uploaders: Julien Schueller <schueller@phimeca.com>
-Build-Depends: debhelper (>= 8), quilt, gfortran, cmake, liblapack-dev, libblas-dev
-Standards-Version: 3.9.5
+Uploaders: Julien Schueller <schueller@phimeca.com>, Denis Barbier <barbier@debian.org>
+Build-Depends: debhelper (>= 8), quilt, cmake, liblapack-dev, libblas-dev
+Standards-Version: 3.9.6
 Homepage: https://github.com/jeromerobert/hmat-oss
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=debian-science/packages/hmat-oss.git
+Vcs-Git: git://anonscm.debian.org/debian-science/packages/hmat-oss.git -b debian/experimental
 
 Package: libhmat-oss1
 Section: libs
@@ -22,10 +24,10 @@ Depends: ${misc:Depends}, libhmat-oss1 (= ${binary:Version}),
 Description: headers and development libraries for HMat
  A hierarchical matrix C/C++ library including a LU solver.
  
-Package: libhmat-oss-dbg
+Package: libhmat-oss1-dbg
 Section: debug
 Architecture: any
-Depends: ${misc:Depends}, libhmat-oss-dev
+Depends: libhmat-oss1 (= ${binary:Version}), ${misc:Depends}
 Description: debug symbols for HMat 
  A hierarchical matrix C/C++ library including a LU solver.
 
