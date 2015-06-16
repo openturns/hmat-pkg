@@ -3,7 +3,7 @@ Section: science
 Priority: extra
 Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
 Uploaders: Julien Schueller <schueller@phimeca.com>, Denis Barbier <barbier@debian.org>
-Build-Depends: debhelper (>= 8), quilt, cmake, liblapack-dev, libblas-dev
+Build-Depends: debhelper (>= 8), quilt, cmake, liblapack-dev, libblas-dev, gfortran
 Standards-Version: 3.9.6
 Homepage: https://github.com/jeromerobert/hmat-oss
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=debian-science/packages/hmat-oss.git

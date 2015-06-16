@@ -14,7 +14,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           hmat-oss 
-Version:        1.0.7
+Version:        1.1.1
 Release:        1%{?dist}
 Summary:        A hierarchical matrix C/C++ library
 Group:          System Environment/Libraries
