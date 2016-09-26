@@ -7,7 +7,7 @@ $(info DEB_BUILD_OPTIONS:$(origin DEB_BUILD_OPTIONS)=$(DEB_BUILD_OPTIONS))
 
 cppflags := $(shell dpkg-buildflags --get CPPFLAGS)
 cflags := $(shell dpkg-buildflags --get CFLAGS) $(cppflags)
-cxxflags := $(shell dpkg-buildflags --get CXXFLAGS) $(cppflags)
+cxxflags := $(shell dpkg-buildflags --get CXXFLAGS) $(cppflags) -Wno-error
 ldflags := $(shell dpkg-buildflags --get LDFLAGS)
 ldflags += -Wl,--as-needed
 
