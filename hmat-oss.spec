@@ -14,7 +14,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           hmat-oss 
-Version:        1.5.0
+Version:        1.6.1
 Release:        1%{?dist}
 Summary:        A hierarchical matrix C/C++ library
 Group:          System Environment/Libraries
@@ -24,16 +24,16 @@ Source0:        https://github.com/jeromerobert/hmat-oss/archive/%{version}.tar.
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake
 %if 0%{?suse_version}
-BuildRequires:  lapack
-BuildRequires:  cblas-devel 
-%else
-BuildRequires:  lapack-devel
-BuildRequires:  atlas-devel
-%endif
-%if 0%{?suse_version}
 BuildRequires:  gcc-fortran
 %else
 BuildRequires:  gcc-gfortran
+%endif
+BuildRequires:  lapack-devel
+%if 0%{?suse_version}
+BuildRequires:  cblas-devel
+%endif
+%if 0%{?centos_version} || 0%{?fedora_version}
+BuildRequires:  atlas-devel
 %endif
 Requires:       libhmat-oss1
 
@@ -43,11 +43,16 @@ A hierarchical matrix C/C++ library including a LU solver.
 %package -n libhmat-oss1
 Summary:        A hierarchical matrix C/C++ library 
 Group:          Development/Libraries/C and C++
-Requires:       lapack
-%if ! 0%{?suse_version}
-Requires:       atlas
+%if 0%{?mageia}
+Requires:       lib64lapack3
 %else
+Requires:       lapack
+%endif
+%if 0%{?suse_version}
 Requires:       cblas
+%endif
+%if 0%{?centos_version} || 0%{?fedora_version}
+Requires:       atlas
 %endif
 
 %description -n libhmat-oss1
@@ -57,11 +62,12 @@ A hierarchical matrix C/C++ library (binaries)
 Summary:        A hierarchical matrix C/C++ library 
 Group:          Development/Libraries/C and C++
 Requires:       libhmat-oss1 = %{version}
-%if ! 0%{?suse_version}
 Requires:       lapack-devel
-Requires:       atlas-devel
-%else
-Requires:       cblas-devel
+%if 0%{?suse_version}
+BuildRequires:  cblas-devel
+%endif
+%if 0%{?centos_version} || 0%{?fedora_version}
+BuildRequires:  atlas-devel
 %endif
 
 %description devel
@@ -70,12 +76,12 @@ A hierarchical matrix C/C++ library (development files)
 %prep
 %setup -q
 
-# obs instances are missing the symlinks
-sed -i 's|set(HMAT_LIBRARIES "@CMAKE_PROJECT_NAME@")|set(HMAT_LIBRARIES "@CMAKE_PROJECT_NAME@;\${CBLAS_LIBRARIES}")|g' CMake/HMATConfig.cmake.in
-
 %build
-# workaround for missing symlinks on OBS instances
-%cmake -DCBLAS_LIBRARIES=`find /usr/lib* -name libcblas.so -o -name libsatlas.so`
+%if 0%{?suse_version}
+%cmake -DCBLAS_LIBRARIES="cblas;blas" -DBUILD_EXAMPLES=ON .
+%else
+%cmake -DCBLAS_cblas_INCLUDE=/usr/include/cblas -DBUILD_EXAMPLES=ON .
+%endif
 make %{?_smp_mflags} 
 
 %install
