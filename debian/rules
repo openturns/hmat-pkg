@@ -16,7 +16,7 @@ builddir := obj-$(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 
 
 %:
-	dh $@ --buildsystem=cmake --builddirectory=$(builddir) --with quilt --parallel
+	dh $@ --buildsystem=cmake --builddirectory=$(builddir) --parallel
 
 override_dh_auto_configure:
 	dh_auto_configure -- \

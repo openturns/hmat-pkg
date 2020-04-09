@@ -23,11 +23,6 @@ URL:            https://github.com/jeromerobert/hmat-oss
 Source0:        https://github.com/jeromerobert/hmat-oss/archive/%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake
-%if 0%{?suse_version}
-BuildRequires:  gcc-fortran
-%else
-BuildRequires:  gcc-gfortran
-%endif
 BuildRequires:  lapack-devel
 %if 0%{?suse_version}
 BuildRequires:  cblas-devel
@@ -63,12 +58,6 @@ Summary:        A hierarchical matrix C/C++ library
 Group:          Development/Libraries/C and C++
 Requires:       libhmat-oss1 = %{version}
 Requires:       lapack-devel
-%if 0%{?suse_version}
-BuildRequires:  cblas-devel
-%endif
-%if 0%{?centos_version} || 0%{?fedora_version}
-BuildRequires:  atlas-devel
-%endif
 
 %description devel
 A hierarchical matrix C/C++ library (development files)
