@@ -21,6 +21,7 @@ Group:          System Environment/Libraries
 License:        GPL2
 URL:            https://github.com/jeromerobert/hmat-oss
 Source0:        https://github.com/jeromerobert/hmat-oss/archive/%{version}.tar.gz
+Patch0:         werror.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake
 BuildRequires:  lapack-devel
@@ -64,6 +65,7 @@ A hierarchical matrix C/C++ library (development files)
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %if 0%{?suse_version}
