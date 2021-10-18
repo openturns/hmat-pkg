@@ -14,14 +14,13 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           hmat-oss 
-Version:        1.6.1
+Version:        1.7.1
 Release:        1%{?dist}
 Summary:        A hierarchical matrix C/C++ library
 Group:          System Environment/Libraries
 License:        GPL2
 URL:            https://github.com/jeromerobert/hmat-oss
 Source0:        https://github.com/jeromerobert/hmat-oss/archive/%{version}.tar.gz
-Patch0:         werror.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake
 BuildRequires:  lapack-devel
@@ -65,7 +64,6 @@ A hierarchical matrix C/C++ library (development files)
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %if 0%{?suse_version}
@@ -82,8 +80,8 @@ make install DESTDIR=%{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -n libhmat-oss1 -p /sbin/ldconfig 
-%postun -n libhmat-oss1 -p /sbin/ldconfig  
+%post -n libhmat-oss1 -p /sbin/ldconfig
+%postun -n libhmat-oss1 -p /sbin/ldconfig
 
 %files -n libhmat-oss1
 %defattr(-,root,root,-)
@@ -93,7 +91,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %dir %{_includedir}/hmat/
 %{_includedir}/hmat/*.h
-%{_includedir}/*.hpp
 %{_libdir}/*.so
 %dir %{_libdir}/cmake/hmat/
 %{_libdir}/cmake/hmat/*.cmake
