@@ -1,18 +1,3 @@
-# norootforbuild
-
-%define __cmake %{_bindir}/cmake
-%define _cmake_lib_suffix64 -DLIB_SUFFIX=64
-%define cmake \
-CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
-CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
-FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
-%__cmake \\\
--DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \\\
-%if "%{?_lib}" == "lib64" \
-%{?_cmake_lib_suffix64} \\\
-%endif \
--DBUILD_SHARED_LIBS:BOOL=ON
-
 Name:           hmat-oss 
 Version:        1.7.1
 Release:        1%{?dist}
@@ -21,7 +6,6 @@ Group:          System Environment/Libraries
 License:        GPL2
 URL:            https://github.com/jeromerobert/hmat-oss
 Source0:        https://github.com/jeromerobert/hmat-oss/archive/%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake
 BuildRequires:  lapack-devel
 %if 0%{?suse_version}
@@ -67,18 +51,14 @@ A hierarchical matrix C/C++ library (development files)
 
 %build
 %if 0%{?suse_version}
-%cmake -DCBLAS_LIBRARIES="cblas;blas" -DBUILD_EXAMPLES=ON .
+%cmake -DCBLAS_LIBRARIES="cblas;blas" .
 %else
-%cmake -DCBLAS_cblas_INCLUDE=/usr/include/cblas -DBUILD_EXAMPLES=ON .
+%cmake -DCBLAS_cblas_INCLUDE=/usr/include/cblas .
 %endif
-make %{?_smp_mflags} 
+%cmake_build
 
 %install
-rm -rf %{buildroot}
-make install DESTDIR=%{buildroot}
-
-%clean
-rm -rf %{buildroot}
+%cmake_install
 
 %post -n libhmat-oss1 -p /sbin/ldconfig
 %postun -n libhmat-oss1 -p /sbin/ldconfig
