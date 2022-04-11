@@ -1,37 +1,17 @@
 #!/usr/bin/make -f
 
-ifeq ($(findstring parallel=,$(DEB_BUILD_OPTIONS)),)
-	export DEB_BUILD_OPTIONS+=parallel=$(shell getconf _NPROCESSORS_ONLN)
-endif
-$(info DEB_BUILD_OPTIONS:$(origin DEB_BUILD_OPTIONS)=$(DEB_BUILD_OPTIONS))
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+include /usr/share/dpkg/buildflags.mk
+CFLAGS+=$(CPPFLAGS)
+CXXFLAGS+=$(CPPFLAGS)
+DPKG_EXPORT_BUILDFLAGS = 1
 
-cppflags := $(shell dpkg-buildflags --get CPPFLAGS)
-cflags := $(shell dpkg-buildflags --get CFLAGS) $(cppflags)
-cxxflags := $(shell dpkg-buildflags --get CXXFLAGS) $(cppflags) -Wno-error
-ldflags := $(shell dpkg-buildflags --get LDFLAGS)
-ldflags += -Wl,--as-needed
-
-# Explicitly set builddir directory
-builddir := obj-$(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-
+include /usr/share/dpkg/pkg-info.mk
 
 %:
-	dh $@ --buildsystem=cmake --builddirectory=$(builddir) --parallel
+	dh $@ --buildsystem=cmake
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-            $(with_tbb) \
-            -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
-            -DCMAKE_C_FLAGS_RELWITHDEBINFO:STRING='$(cflags)' \
-            -DCMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING='$(cxxflags)' \
-            -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
-            -DCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
-            -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
-            -DCMAKE_INSTALL_LIBDIR:PATH=lib \
-            -DINSTALL_INCLUDE_DIR:PATH=/usr/include/hmat \
-            -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp
-
-override_dh_strip:
-	dh_strip --dbg-package=libhmat-oss1-dbg
-
+            -DHMAT_INSTALL_LIB_DIR:STRING="lib/$(DEB_HOST_MULTIARCH)"

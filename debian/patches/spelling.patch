@@ -1,0 +1,16 @@
+Description: correcting spelling errors
+Author: Pierre Gruet <pgt@debian.org>
+Forwarded: https://github.com/jeromerobert/hmat-oss/issues/78
+Last-Update: 2022-04-02
+
+--- a/src/scalar_array.cpp
++++ b/src/scalar_array.cpp
+@@ -978,7 +978,7 @@
+     // computation to proceed. Otherwise, I stop here.
+     if (!workAroundFailures) throw;
+ 
+-    printf("%s overriden...\n", e.what());
++    printf("%s overridden...\n", e.what());
+     // If rows<cols, then p==rows, 'u' is square, 'v' has the dimensions of 'this'.
+     // fake 'u' is identity, fake 'v' is 'this^T'
+     if (rows<cols) {
