@@ -1,5 +1,5 @@
 Name:           hmat-oss 
-Version:        1.7.1
+Version:        1.8.1
 Release:        1%{?dist}
 Summary:        A hierarchical matrix C/C++ library
 Group:          System Environment/Libraries
@@ -9,17 +9,21 @@ Source0:        https://github.com/jeromerobert/hmat-oss/archive/%{version}.tar.
 BuildRequires:  gcc-c++, cmake
 BuildRequires:  lapack-devel
 %if 0%{?suse_version}
+BuildRequires:  lapacke-devel
 BuildRequires:  cblas-devel
 %endif
 %if 0%{?centos_version} || 0%{?fedora_version}
 BuildRequires:  atlas-devel
 %endif
-Requires:       libhmat-oss1
+%if 0%{?fedora_version}
+BuildRequires:  blas-static lapack-static
+%endif
+Requires:       libhmat-oss3
 
 %description
 A hierarchical matrix C/C++ library including a LU solver.
 
-%package -n libhmat-oss1
+%package -n libhmat-oss3
 Summary:        A hierarchical matrix C/C++ library 
 Group:          Development/Libraries/C and C++
 %if 0%{?mageia}
@@ -29,19 +33,24 @@ Requires:       lapack
 %endif
 %if 0%{?suse_version}
 Requires:       cblas
+Requires:       lapacke
 %endif
 %if 0%{?centos_version} || 0%{?fedora_version}
 Requires:       atlas
 %endif
 
-%description -n libhmat-oss1
+%description -n libhmat-oss3
 A hierarchical matrix C/C++ library (binaries) 
 
 %package devel
 Summary:        A hierarchical matrix C/C++ library 
 Group:          Development/Libraries/C and C++
-Requires:       libhmat-oss1 = %{version}
+Requires:       libhmat-oss3 = %{version}
+%if 0%{?suse_version}
+Requires:       lapacke-devel
+%else
 Requires:       lapack-devel
+%endif
 
 %description devel
 A hierarchical matrix C/C++ library (development files)
@@ -50,20 +59,23 @@ A hierarchical matrix C/C++ library (development files)
 %setup -q
 
 %build
+%if 0%{?centos_version} || 0%{?mageia}
+export CXXFLAGS="${CXXFLAGS} -I/usr/include/lapacke"
+%endif
 %if 0%{?suse_version}
-%cmake -DCBLAS_LIBRARIES="cblas;blas" .
+%cmake -DCBLAS_LIBRARIES="cblas;blas" -DLAPACKE_LIBRARIES="lapacke;lapack" .
 %else
-%cmake -DCBLAS_cblas_INCLUDE=/usr/include/cblas .
+%cmake -DCBLAS_cblas_INCLUDE=/usr/include/cblas -DLAPACKE_LIBRARIES="lapacke;lapack" .
 %endif
 %cmake_build
 
 %install
 %cmake_install
 
-%post -n libhmat-oss1 -p /sbin/ldconfig
-%postun -n libhmat-oss1 -p /sbin/ldconfig
+%post -n libhmat-oss3 -p /sbin/ldconfig
+%postun -n libhmat-oss3 -p /sbin/ldconfig
 
-%files -n libhmat-oss1
+%files -n libhmat-oss3
 %defattr(-,root,root,-)
 %{_libdir}/*.so.*
 
