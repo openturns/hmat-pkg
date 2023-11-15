@@ -1,11 +1,12 @@
 Name:           hmat-oss 
-Version:        1.8.1
+Version:        1.9.0
 Release:        1%{?dist}
 Summary:        A hierarchical matrix C/C++ library
 Group:          System Environment/Libraries
 License:        GPL2
 URL:            https://github.com/jeromerobert/hmat-oss
 Source0:        https://github.com/jeromerobert/hmat-oss/archive/%{version}.tar.gz
+Patch0:         mageia.patch
 BuildRequires:  gcc-c++, cmake
 BuildRequires:  lapack-devel
 %if 0%{?suse_version}
@@ -17,6 +18,9 @@ BuildRequires:  atlas-devel
 %endif
 %if 0%{?fedora_version}
 BuildRequires:  blas-static lapack-static
+%endif
+%if 0%{?mageia}
+BuildRequires:  lib64blas-static-devel lib64lapack-static-devel
 %endif
 Requires:       libhmat-oss3
 
@@ -57,6 +61,9 @@ A hierarchical matrix C/C++ library (development files)
 
 %prep
 %setup -q
+%if 0%{?mageia}
+%patch0 -p1
+%endif
 
 %build
 %if 0%{?centos_version} || 0%{?mageia}
